@@ -1,9 +1,7 @@
+import AppRoutes from './routes/AppRoutes'
+
 function App() {
-  return (
-    <>
-      Olá, Projectum!
-    </>
-  )
+  return <AppRoutes />
 }
 
 export default App
