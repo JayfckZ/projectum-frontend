@@ -8,7 +8,6 @@ export default function PrivateRoute({ children }: { children: JSX.Element }) {
 
   if (!isAuthenticated) {
     return <Navigate to="/login" replace />
-
-    return children
   }
+  return children
 }
