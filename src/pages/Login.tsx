@@ -25,8 +25,7 @@ export default function Login() {
       // data = { access: "...", user: {...} }
       dispatch(
         setCredentials({
-          user: data.user,
-          token: data.access
+          user: data.user
         })
       )
 

@@ -4,10 +4,17 @@ import { JSX } from 'react'
 import { useAppSelector } from '../hooks/useAppSelector.ts'
 
 export default function PrivateRoute({ children }: { children: JSX.Element }) {
-  const isAuthenticated = useAppSelector((state) => Boolean(state.auth.token))
+  const { isAuthenticated, authLoading } = useAppSelector((s) => s.auth)
 
-  if (!isAuthenticated) {
-    return <Navigate to="/login" replace />
+  if (authLoading) {
+    return (
+      <div className="flex h-screen items-center justify-center text-xl font-semibold">
+        Carregando...
+      </div>
+    )
   }
+  
+  if (!isAuthenticated) return <Navigate to="/login" replace />
+
   return children
 }

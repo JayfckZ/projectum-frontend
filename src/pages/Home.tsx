@@ -2,22 +2,31 @@ import { useGetProjectsQuery } from '../features/project/projectApi'
 import { useAppSelector } from '../hooks/useAppSelector'
 import { useAppDispatch } from '../hooks/useAppDispatch'
 import { logout } from '../features/auth/authSlice'
+import { useLogoutMutation } from '../features/auth/authApi'
 
 const Home = () => {
+  const [logoutApi] = useLogoutMutation()
   const dispatch = useAppDispatch()
   const user = useAppSelector((s) => s.auth.user)
 
+  const handleLogout = async () => {
+    await logoutApi(undefined).unwrap()
+    dispatch(logout())
+
+  }
   const { data, isLoading, isError } = useGetProjectsQuery(undefined)
+
+  if (isLoading) return <div>Carregando...</div>
 
   return (
     <div className="min-h-screen bg-gray-100 p-8">
       <div className="mb-6 flex items-center justify-between">
         <h1 className="text-2xl font-semibold text-gray-800">
-          Bem-vindo, {user?.name || 'usuário'}
+          Bem-vindo, {user?.username || 'usuário'}
         </h1>
 
         <button
-          onClick={() => dispatch(logout())}
+          onClick={() => handleLogout()}
           className="rounded-lg bg-red-600 px-4 py-2 text-white transition hover:bg-red-700"
         >
           Sair

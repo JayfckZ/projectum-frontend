@@ -4,13 +4,14 @@ export const authApi = createApi({
   reducerPath: 'authApi',
   baseQuery: fetchBaseQuery({
     baseUrl: 'http://localhost:8000/api',
-    prepareHeaders: (headers, { getState }) => {
-      const token = (getState() as any).auth.token
-      if (token) {
-        headers.set('authorization', `Bearer ${token}`)
-      }
-      return headers
-    }
+    credentials: 'include'
+    // prepareHeaders: (headers, { getState }) => {
+    //   const token = (getState() as any).auth.token
+    //   if (token) {
+    //     headers.set('authorization', `Bearer ${token}`)
+    //   }
+    //   return headers
+    // }
   }),
   endpoints: (builder) => ({
     login: builder.mutation({
@@ -20,10 +21,17 @@ export const authApi = createApi({
         body: credentials
       })
     }),
+    logout: builder.mutation({
+      query: () => ({
+        url: '/auth/logout/',
+        method: 'POST',
+        credentials: 'include'
+      })
+    }),
     getUser: builder.query({
       query: () => '/auth/me/'
     })
   })
 })
 
-export const { useLoginMutation, useGetUserQuery } = authApi
+export const { useLoginMutation, useGetUserQuery, useLogoutMutation } = authApi
